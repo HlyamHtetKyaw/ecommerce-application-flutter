@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
-
-void main() {
+import 'package:get_storage/get_storage.dart';
+import 'package:get/get.dart';
+import 'controllers/ThemeController.dart';
+import 'utils/AppThemes.dart';
+import 'view/SplashScreen.dart';
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
+  Get.put(ThemeController());
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+    final themeController = Get.find<ThemeController>();
+    return GetMaterialApp(
+      title: 'Fashion Store',
+      theme: AppThemes.light,
+      darkTheme: AppThemes.dark,
+      themeMode: themeController.theme,
+      defaultTransition: Transition.fade,
+      home: const SplashScreen(),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
